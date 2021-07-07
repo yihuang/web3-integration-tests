@@ -17,6 +17,7 @@ pytest-github-actions-annotate-failures = "^0.1.1"
 PyYAML = "^5.3.1"
 python-dateutil = "^2.8.1"
 pystarport = { git = "https://github.com/yihuang/pystarport.git", branch = "start-flags" }
+web3 = "^5.20.1"
 
 [tool.poetry.dev-dependencies]
 

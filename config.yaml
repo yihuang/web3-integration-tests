@@ -20,8 +20,3 @@ chainmaind-1:
     - name: community
       coins: 10000000000000000000000aphoton
       mnemonic: "notable error gospel wave pair ugly measure elite toddler cost various fly make eye ketchup despair slab throw tribe swarm word fruit into inmate"
-        #genesis:
-        #  app_state:
-        #    staking:
-        #      params:
-        #        unbonding_time: "10s"
