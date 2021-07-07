@@ -19,9 +19,6 @@ def test_basic(w3):
     # )
 
     acct = eth_account.Account.from_key(VALIDATOR_PRIV_KEY)
-    addr = w3.geth.personal.import_raw_key(VALIDATOR_PRIV_KEY, "1")
-    w3.geth.personal.unlock_account(addr, "1")
-    assert addr == acct.address, "invalid address"
     print(w3.eth.get_balance(acct.address))
     tx = {
         "from": acct.address,
@@ -34,7 +31,7 @@ def test_basic(w3):
     print("txhash", txhash.hex())
     tx = waittx(w3, txhash)
     print("get tx", tx)
-    print("balance", w3.eth.get_balance(acct.address), w3.eth.getBalance(COMMUNITY))
+    print("balance", w3.eth.get_balance(acct.address), w3.eth.get_balance(COMMUNITY))
     print("receipt", w3.eth.get_transaction_receipt(txhash))
     # print("get block", w3.eth.get_block(tx.blockNumber))
 

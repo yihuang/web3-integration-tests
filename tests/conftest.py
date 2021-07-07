@@ -8,7 +8,7 @@ import pytest
 import web3
 from web3.middleware import geth_poa_middleware
 
-from .utils import waittx
+from .utils import waittx, VALIDATOR_PRIV_KEY, COMMUNITY
 
 
 def wait_for_port(port, host="127.0.0.1", timeout=40.0):
@@ -73,25 +73,34 @@ def setup_geth(path):
         wait_for_ipc(ipc_path)
         w3 = web3.Web3(web3.providers.IPCProvider(ipc_path))
         w3.middleware_onion.inject(geth_poa_middleware, layer=0)
-        txhash = w3.eth.send_transaction(
+
+        # validator address
+        tx1 = w3.eth.send_transaction(
             {
                 "from": w3.eth.coinbase,
                 "to": "0x57f96e6B86CdeFdB3d412547816a82E3E0EbF9D2",
                 "value": 1000000000000000000,
             }
         )
-        waittx(w3, txhash)
-        w3.eth
+        # community address
+        tx2 = w3.eth.send_transaction(
+            {
+                "from": w3.eth.coinbase,
+                "to": "0x378c50D9264C63F3F92B806d4ee56E9D86FfB3Ec",
+                "value": 10000000000000000000000,
+            }
+        )
+        assert waittx(w3, tx1).status == 1, "prepare tx failed"
+        assert waittx(w3, tx2).status == 1, "prepare tx failed"
+        addr = w3.geth.personal.import_raw_key(VALIDATOR_PRIV_KEY, "1")
+        w3.geth.personal.unlock_account(addr, "1")
         yield w3
     finally:
         proc.terminate()
         proc.wait()
 
 
-@pytest.fixture(
-    scope="session",
-    params=["ethermint", "geth"]
-)
+@pytest.fixture(scope="session", params=["ethermint", "geth"])
 def w3(request, tmp_path_factory):
     provider = request.param
     path = tmp_path_factory.mktemp(provider)
