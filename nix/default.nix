@@ -7,7 +7,7 @@ import sources.nixpkgs {
         name = "ethermint";
         src = sources.ethermint;
         subPackages = [ "./cmd/ethermintd" ];
-        vendorSha256 = sha256:015fn37ffkcvn2vmdr6xqwmk0grjhvcgnbv900cpmy7ywrqjc0nw;
+        vendorSha256 = sha256:1pk3xdwa4bb4wqzzqb7zw2m915ycmwjijnrr43y4f1jjyjjlv058;
         doCheck = false;
       };
     })

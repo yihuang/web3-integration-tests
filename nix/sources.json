@@ -5,10 +5,10 @@
         "homepage": "https://ethermint.zone/",
         "owner": "tharsis",
         "repo": "ethermint",
-        "rev": "5f1f252361a615a25a33c5b8e86f1a2aee5521e6",
-        "sha256": "05g0mznq0yzn6i6g6dkihvhlilckm87pq1pmi805piprwhkrk6nq",
+        "rev": "74b7eaf431a5dcc93f4a592a6aa98befd3c3cb75",
+        "sha256": "002cvf93h718iv5m7zgvmql8gdwzk2ns91xalsyc7abvq4wcdzra",
         "type": "tarball",
-        "url": "https://github.com/tharsis/ethermint/archive/5f1f252361a615a25a33c5b8e86f1a2aee5521e6.tar.gz",
+        "url": "https://github.com/tharsis/ethermint/archive/74b7eaf431a5dcc93f4a592a6aa98befd3c3cb75.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
