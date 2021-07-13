@@ -1,14 +1,14 @@
 {
     "ethermint": {
-        "branch": "main",
+        "branch": "estimate-gas",
         "description": "Ethermint is a scalable and interoperable Ethereum, built on Proof-of-Stake with fast-finality using the Cosmos SDK.",
         "homepage": "https://ethermint.zone/",
-        "owner": "tharsis",
+        "owner": "yihuang",
         "repo": "ethermint",
-        "rev": "74b7eaf431a5dcc93f4a592a6aa98befd3c3cb75",
-        "sha256": "002cvf93h718iv5m7zgvmql8gdwzk2ns91xalsyc7abvq4wcdzra",
+        "rev": "287eeff420eb01631642a1573b2b6738517cbe80",
+        "sha256": "0c26r6mqjwshalm3qkn4cgnfg9gsl8f2cqvwv70lmy2a87m6iy9k",
         "type": "tarball",
-        "url": "https://github.com/tharsis/ethermint/archive/74b7eaf431a5dcc93f4a592a6aa98befd3c3cb75.tar.gz",
+        "url": "https://github.com/yihuang/ethermint/archive/287eeff420eb01631642a1573b2b6738517cbe80.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
