@@ -1,11 +1,11 @@
 import json
-import time
 
-import eth_utils
 import eth_account
+import eth_utils
+import pytest
 import rlp
 
-from .utils import waittx, COMMUNITY, VALIDATOR_PRIV_KEY
+from .utils import ADDRS, KEYS, waittx
 
 bytecode = json.loads(
     """{
@@ -391,7 +391,7 @@ class ContractAddress(rlp.Serializable):
 def test_erc20_contract(w3):
     chain_id = w3.eth.chain_id
 
-    acct = eth_account.Account.from_key(VALIDATOR_PRIV_KEY)
+    acct = eth_account.Account.from_key(KEYS["validator"])
 
     erc20_contract = w3.eth.contract(abi=abi, bytecode=bytecode["object"])
     tx = erc20_contract.constructor().buildTransaction(
@@ -401,7 +401,7 @@ def test_erc20_contract(w3):
             "nonce": w3.eth.get_transaction_count(acct.address, "pending"),
         }
     )
-    signed = eth_account.Account.sign_transaction(tx, VALIDATOR_PRIV_KEY)
+    signed = eth_account.Account.sign_transaction(tx, KEYS["validator"])
     txhash = w3.eth.send_raw_transaction(signed.rawTransaction)
     print("deploy contract tx", txhash.hex())
     tx = waittx(w3, txhash)
@@ -438,11 +438,11 @@ def test_erc20_contract(w3):
         "balances",
         acct.address,
         contract.functions.balanceOf(acct.address).call({"from": acct.address}),
-        COMMUNITY,
-        contract.functions.balanceOf(COMMUNITY).call({"from": acct.address}),
+        ADDRS["community"],
+        contract.functions.balanceOf(ADDRS["community"]).call({"from": acct.address}),
     )
 
-    txhash = contract.functions.transfer(COMMUNITY, 10).transact(
+    txhash = contract.functions.transfer(ADDRS["community"], 10).transact(
         {"from": acct.address, "chainId": chain_id}
     )
     print("transfer tx", txhash.hex())
@@ -458,8 +458,8 @@ def test_erc20_contract(w3):
         "balances",
         acct.address,
         contract.functions.balanceOf(acct.address).call({"from": acct.address}),
-        COMMUNITY,
-        contract.functions.balanceOf(COMMUNITY).call({"from": acct.address}),
+        ADDRS["community"],
+        contract.functions.balanceOf(ADDRS["community"]).call({"from": acct.address}),
     )
 
     print("get block", w3.eth.get_block(tx.blockNumber))
@@ -468,16 +468,25 @@ def test_erc20_contract(w3):
     print("transfer block", block)
     assert block.logsBloom == tx.logsBloom, "invalid block logs bloom"
 
+    # build transaction without from field
+    with pytest.raises(Exception):
+        contract.functions.transfer(ADDRS["community"], 10).buildTransaction(
+            {
+                "chainId": chain_id,
+                "nonce": w3.eth.get_transaction_count(acct.address, "pending"),
+            }
+        )
+
     # offline build transfer
-    tx = contract.functions.transfer(COMMUNITY, 10).buildTransaction(
+    tx = contract.functions.transfer(ADDRS["community"], 10).buildTransaction(
         {
+            "from": acct.address,
             "chainId": chain_id,
-            "gas": 400000,
             "nonce": w3.eth.get_transaction_count(acct.address, "pending"),
         }
     )
-    # tx["gas"] = w3.eth.estimateGas(tx)
-    signed = eth_account.Account.sign_transaction(tx, VALIDATOR_PRIV_KEY)
+    assert tx["gas"] == 40266
+    signed = eth_account.Account.sign_transaction(tx, KEYS["validator"])
     txhash = w3.eth.send_raw_transaction(signed.rawTransaction)
     tx = waittx(w3, txhash)
     print("receipt", tx)
@@ -488,6 +497,6 @@ def test_erc20_contract(w3):
         "balances",
         acct.address,
         contract.functions.balanceOf(acct.address).call({"from": acct.address}),
-        COMMUNITY,
-        contract.functions.balanceOf(COMMUNITY).call({"from": acct.address}),
+        ADDRS["community"],
+        contract.functions.balanceOf(ADDRS["community"]).call({"from": acct.address}),
     )
