@@ -1,6 +1,8 @@
 import time
 
 import eth_account
+import eth_utils
+import rlp
 from web3.exceptions import TransactionNotFound
 
 ETHERMINT_CHAIN_ID = 1
@@ -21,3 +23,20 @@ def waittx(w3, txhash, timeout=5):
             pass
         time.sleep(0.5)
     raise TimeoutError(f"get_transaction_receipt timeout {txhash.hex()}")
+
+
+class ContractAddress(rlp.Serializable):
+    fields = [
+        ("from", rlp.sedes.Binary()),
+        ("nonce", rlp.sedes.big_endian_int),
+    ]
+
+
+def contract_address(addr, nonce):
+    return eth_utils.to_checksum_address(
+        eth_utils.to_hex(
+            eth_utils.keccak(
+                rlp.encode(ContractAddress(eth_utils.to_bytes(hexstr=addr), nonce))
+            )[12:]
+        )
+    )
