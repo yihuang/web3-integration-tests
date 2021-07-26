@@ -7,7 +7,7 @@ import sources.nixpkgs {
         name = "ethermint";
         src = sources.ethermint;
         subPackages = [ "./cmd/ethermintd" ];
-        vendorSha256 = sha256:0l60mysv18x05k2qh9gvhzsy35s2kv1x8jvbb1vc6x1calmp9nk4;
+        vendorSha256 = sha256:1s4nsy1d5llvshfyzx85jnjh7ncl75z25kwgpsc53p7yvphar236;
         doCheck = false;
       };
       pystarport = pkgs.poetry2nix.mkPoetryApplication {

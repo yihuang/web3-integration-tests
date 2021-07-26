@@ -12,7 +12,7 @@
     "istanbulBlock": 0,
     "muirGlacierBlock": 0,
     "berlinBlock": 0,
-    "yoloV3Block": 0,
+    "yoloV3Block": -1,
     "clique": {
       "period": 2,
       "epoch": 30000

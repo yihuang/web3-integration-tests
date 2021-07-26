@@ -39,7 +39,9 @@ def wait_for_ipc(path, timeout=40.0):
 
 
 def setup_ethermint(path):
-    proc = subprocess.Popen(["start-ethermint", path], preexec_fn=os.setsid)
+    proc = subprocess.Popen(
+        ["start-ethermint", path], preexec_fn=os.setsid, stdout=subprocess.PIPE
+    )
     try:
         wait_for_port(1317)
         yield web3.Web3(web3.providers.HTTPProvider("http://localhost:1317"))
@@ -50,7 +52,9 @@ def setup_ethermint(path):
 
 
 def setup_geth(path):
-    proc = subprocess.Popen(["start-geth", path], preexec_fn=os.setsid)
+    proc = subprocess.Popen(
+        ["start-geth", path], preexec_fn=os.setsid, stdout=subprocess.PIPE
+    )
     try:
         ipc_path = path / "geth.ipc"
         wait_for_ipc(ipc_path)
